@@ -22,11 +22,9 @@ With a backend implementation, the collected data opens up various potential app
 - [x] Reset image to initial state (useful for images with pre-existing coordinates)
 - [x] Deleting all boxes
 - [x] Downloading images in .jpg, .png, and .svg formats along with drawn boxes.
-- [x] Random image addition via the API of picsum.photos
 
 ### Inactive Functionalities
-- [ ] Edit image list button: Removed due to lack of backend; images can be simulated for deletion by removing them from the static list.
-- [ ] Save changes button: Deactivated as there is no backend storage; modifications are not stored or uploaded.
+- [ ] Add, edit and delete images: Having a backend implemented, we could add this functionality to store bounding box and image information.
 
 ## How to run the app
 
