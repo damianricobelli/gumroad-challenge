@@ -47,19 +47,13 @@ export function ImagesList({
 	const [status, setStatus] = useState<"default" | "edit">("default");
 
 	const deleteFile = async () => {
-		toast.promise(
-			async () => {
-				setChecked([]);
-				router.refresh();
-			},
-			{
-				loading: "Deleting file...",
-				success: "Files removed successfully",
-				error: (error: Error) => {
-					return `An error occurred while deleting file. Cause: ${error.message}`;
-				},
-			},
-		);
+		toast("This feature is not implemented yet", {
+			description:
+				"Having a backend implemented, we could delete the images from the database storage.",
+		});
+		setChecked([]);
+		setStatus("default");
+		router.refresh();
 	};
 
 	return (

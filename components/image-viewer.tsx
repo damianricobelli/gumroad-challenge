@@ -10,6 +10,7 @@ import * as React from "react";
 import ImageEditor from "./image-editor/image-editor";
 import { ImagesList } from "./images-list";
 import { Button } from "./ui/button";
+import { toast } from "./ui/sonner";
 
 export function ImageViewer({
 	images,
@@ -50,7 +51,12 @@ export function ImageViewer({
 				<Button
 					variant="ghost"
 					className="border-2 border-dashed p-4 rounded-lg flex items-center justify-center h-full"
-					onClick={() => {}}
+					onClick={() => {
+						toast("This feature is not implemented yet", {
+							description:
+								"The main idea is to be able to get a random image from picsum.photos and add it to the list of images. A different use case would be to have an input that allows uploading files to the database.",
+						});
+					}}
 				>
 					<div className="flex flex-col items-center gap-2">
 						<Plus className="size-5" />

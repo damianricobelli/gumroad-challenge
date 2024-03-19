@@ -29,6 +29,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { toast } from "../ui/sonner";
 import { useImageEditor } from "./image-editor.provider";
 
 export function ImageEditorToolbar() {
@@ -125,6 +126,12 @@ export function ImageEditorToolbar() {
 				<Button
 					className="h-8 relative"
 					disabled={isEqual(annotations, rectangles)}
+					onClick={() => {
+						toast("This feature is not implemented yet", {
+							description:
+								"Having a backend implemented, we could store the bounding box coordinate information along with its classification to train an AI model or other use case.",
+						});
+					}}
 				>
 					<Save className="size-4 mr-2" />
 					Save changes

@@ -29,7 +29,7 @@ export default function RootLayout({
 					<div className="space-y-4 mb-4">
 						<Header />
 						{children}
-						<Toaster visibleToasts={1} richColors />
+						<Toaster richColors />
 					</div>
 				</ThemeProvider>
 			</body>
