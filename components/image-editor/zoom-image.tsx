@@ -133,7 +133,7 @@ export const ZoomImage = ({
 }: {
 	children: React.ReactNode;
 }) => {
-	const { showZoomControls } = useImageEditor();
+	const { showZoomControls, setZoomScale } = useImageEditor();
 	const transformComponentRef = useRef<ReactZoomPanPinchRef | null>(null);
 
 	const [doubleStep, setDoubleStep] = useState(0.7);
@@ -143,6 +143,9 @@ export const ZoomImage = ({
 			smooth
 			ref={transformComponentRef}
 			doubleClick={{ step: doubleStep }}
+			onZoomStop={(e) => {
+				setZoomScale(e.state.scale);
+			}}
 			onPanningStop={(e) => {
 				if (e.state.scale !== 1) {
 					setDoubleStep(-0.7);

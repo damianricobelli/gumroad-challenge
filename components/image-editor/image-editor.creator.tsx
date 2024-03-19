@@ -1,3 +1,4 @@
+import { toast } from "@/components/ui/sonner";
 import * as React from "react";
 import { v4 as uuidv4 } from "uuid";
 import { adjustCoordinates } from "./helpers";
@@ -33,9 +34,16 @@ export function ImageEditorCreator() {
 			if (newRectangle) {
 				if (e.type === "mouseup") {
 					// check if the new rectangle is too small
-					if (newRectangle.width < 20 || newRectangle.height < 20) {
+					if (
+						(newRectangle.realCoordinates?.width || 0) < 50 ||
+						(newRectangle.realCoordinates?.height || 0) < 50
+					) {
 						// Reset the current rectangle
 						setNewRectangle(null);
+						toast.warning("The rectangle is too small.", {
+							description:
+								"The rectangle must be at least 50x50 pixels. Then, you can resize it to the desired size.",
+						});
 						return;
 					}
 				}

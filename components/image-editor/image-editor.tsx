@@ -73,17 +73,19 @@ export default function ImageEditor({
 			const height = offsetY - newRectangle.top;
 
 			// Set the width and height of the current rectangle
-			setNewRectangle((prev) => ({
-				...(prev as Rectangle),
-				width,
-				height,
-				realCoordinates: {
-					left: prev?.realCoordinates?.left || 0,
-					top: prev?.realCoordinates?.top || 0,
-					width: width / scaleX,
-					height: height / scaleY,
-				},
-			}));
+			setNewRectangle((prev) => {
+				return {
+					...(prev as Rectangle),
+					width,
+					height,
+					realCoordinates: {
+						left: prev?.realCoordinates?.left || 0,
+						top: prev?.realCoordinates?.top || 0,
+						width: Math.abs(width / scaleX),
+						height: Math.abs(height / scaleY),
+					},
+				};
+			});
 		},
 		[newRectangle, scaleX, scaleY],
 	);

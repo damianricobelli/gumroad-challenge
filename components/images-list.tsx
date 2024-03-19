@@ -164,6 +164,18 @@ export function ImagesList({
 					className="flex items-center gap-3 h-full mt-11"
 					value={`${selectedImage.publicUrl}-${selectedImage.index}`}
 					onValueChange={(value: string) => {
+						if (status === "edit") {
+							setChecked((prev) => {
+								const newChecked = [...prev];
+								const index = Number(value.split("-").pop() as string);
+								newChecked[index] = {
+									...newChecked[index],
+									checked: !newChecked[index]?.checked,
+								};
+								return newChecked;
+							});
+							return;
+						}
 						const index = Number(value.split("-").pop() as string);
 						const publicUrl = images[index].publicUrl;
 						setLoadingSelectedImage(true);

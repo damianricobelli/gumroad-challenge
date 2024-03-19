@@ -16,12 +16,12 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
+import { Separator } from "@/components/ui/separator";
 import { useOnClickOutside } from "@/hooks/use-on-click-outside";
 import { cn } from "@/lib/utils";
 import { CopyPlus, Trash } from "lucide-react";
 import * as React from "react";
 import { v4 as uuidv4 } from "uuid";
-import { Separator } from "../ui/separator";
 import { ImageEditorResizer } from "./image-editor.resizer";
 
 export function ImageEditorRectangle({
