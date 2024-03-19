@@ -1,8 +1,8 @@
 import Link from "next/link";
 
-import { ModeToggle } from "./theme-toggler";
 import { Button } from "@/components/ui/button";
-import { Bot } from "lucide-react";
+import { SquareDashedMousePointer } from "lucide-react";
+import { ModeToggle } from "./theme-toggler";
 
 export default function Header() {
 	return (
@@ -10,8 +10,8 @@ export default function Header() {
 			<header className="mx-auto flex max-w-7xl items-center justify-between h-12">
 				<Button variant="ghost" asChild>
 					<Link href="/">
-						<Bot className="size-4 mr-2" />
-						AI Person Recognition
+						<SquareDashedMousePointer className="size-4 mr-2" />
+						Image elements App
 					</Link>
 				</Button>
 				<ModeToggle />

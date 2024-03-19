@@ -13,7 +13,7 @@ const ToolbarRoot = React.forwardRef<
 	<Toolbar.Root
 		ref={ref}
 		className={cn(
-			"flex p-2.5 w-full min-w-max rounded-md bg-background border select-none",
+			"flex p-2.5 w-full rounded-md bg-background border select-none overflow-auto",
 			className,
 		)}
 		{...props}
@@ -44,7 +44,7 @@ const ToolbarToggleItem = React.forwardRef<
 	<Toolbar.ToggleItem
 		ref={ref}
 		className={cn(
-			"flex-shrink-0 flex-grow-0 basis-auto text-gray-11 h-8 p-2 rounded inline-flex text-sm leading-none items-center justify-center bg-background ml-0.5 outline-none hover:bg-purple-3 hover:text-purple-11 focus:relative focus:shadow-[0_0_0_2px] focus:shadow-purple-7 first:ml-0 data-[state=on]:bg-purple-5 data-[state=on]:text-purple-11",
+			"flex-shrink-0 flex-grow-0 basis-auto text-gray-11 h-8 p-2 rounded-md inline-flex text-sm leading-none items-center justify-center bg-background ml-0.5 outline-none hover:bg-purple-3 hover:text-purple-11 focus:relative focus:shadow-[0_0_0_2px] focus:shadow-purple-7 first:ml-0 data-[state=on]:bg-purple-4 data-[state=on]:text-purple-11",
 			number && "relative",
 			className,
 		)}

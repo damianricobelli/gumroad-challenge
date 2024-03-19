@@ -1,23 +1,23 @@
-import { cn } from '@/lib/utils'
-import './globals.css'
-import { Inter } from 'next/font/google'
-import { ThemeProvider } from '@/components/theme-provider'
-import { Toaster } from '@/components/ui/sonner'
-import Header from '@/components/header'
+import Header from "@/components/header";
+import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
+import { cn } from "@/lib/utils";
+import { Inter } from "next/font/google";
+import "./globals.css";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: 'Gumroad challenge',
-  description: 'App that uses the AWS Rekognition API to recognize people.',
-}
+	title: "Gumroad challenge",
+	description: "App to select and classify elements of an image",
+};
 
 export default function RootLayout({
-  children,
+	children,
 }: {
-  children: React.ReactNode
+	children: React.ReactNode;
 }) {
-  return (
+	return (
 		<html lang="en" suppressHydrationWarning>
 			<body
 				className={cn(
@@ -26,11 +26,13 @@ export default function RootLayout({
 				)}
 			>
 				<ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <Header />
-					{children}
-					<Toaster visibleToasts={1} />
+					<div className="space-y-4 mb-4">
+						<Header />
+						{children}
+						<Toaster visibleToasts={1} />
+					</div>
 				</ThemeProvider>
-      </body>
-    </html>
-  )
+			</body>
+		</html>
+	);
 }
