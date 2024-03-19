@@ -26,7 +26,7 @@ export default function ImageEditor({
 	const [[currentScaleX, currentScaleY], setScale] = React.useState([1, 1]);
 
 	const [zoomScale, setZoomScale] = React.useState(1);
-	const [showZoomControls, setShowZoomControls] = React.useState(true);
+	const [showZoomControls, setShowZoomControls] = React.useState(false);
 
 	const [selectedRectangle, setSelectedRectangle] =
 		React.useState<Rectangle | null>(null);

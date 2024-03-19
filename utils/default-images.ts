@@ -39,4 +39,12 @@ export const defaultImages = [
 		publicUrl: "https://images.unsplash.com/photo-1591980607210-8ea99bee96f0",
 		index: 9,
 	},
+	{
+		publicUrl: "https://images.unsplash.com/photo-1600585152220-90363fe7e115",
+		index: 10,
+	},
+	{
+		publicUrl: "https://images.unsplash.com/photo-1600585154084-4e5fe7c39198",
+		index: 11,
+	},
 ];
