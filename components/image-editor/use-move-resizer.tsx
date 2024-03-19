@@ -133,7 +133,6 @@ export function useMoveResizer({
 					return rectangle.id === id
 						? {
 								...rectangle,
-								score: undefined,
 								left: newLeft,
 								top: newTop,
 								width: newWidth,

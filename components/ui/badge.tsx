@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 import { type VariantProps, cva } from "class-variance-authority";
-import * as React from "react";
 
 const badgeVariants = cva("inline-flex items-center font-medium select-none", {
 	variants: {
@@ -20,18 +19,9 @@ const badgeVariants = cva("inline-flex items-center font-medium select-none", {
 			success: "text-gray-1 dark:text-gray-12 bg-success-9",
 			"success-subtle": "text-success-11 bg-success-3",
 			"success-outline": "text-success-11 border border-success-7",
-			orange: "text-gray-1 dark:text-gray-12 bg-orange-9",
-			"orange-subtle": "text-orange-11 bg-orange-3",
-			"orange-outline": "text-orange-11 border border-orange-7",
-			brown: "text-gray-1 dark:text-gray-12 bg-brown-9",
-			"brown-subtle": "text-brown-11 bg-brown-3",
-			"brown-outline": "text-brown-11 border border-brown-7",
 			purple: "text-gray-1 dark:text-gray-12 bg-purple-9",
 			"purple-subtle": "text-purple-11 bg-purple-3",
 			"purple-outline": "text-purple-11 border border-purple-7",
-			pink: "text-gray-1 dark:text-gray-12 bg-pink-9",
-			"pink-subtle": "text-pink-11 bg-pink-3",
-			"pink-outline": "text-pink-11 border border-pink-7",
 		},
 		size: {
 			xs: "py-[1px] px-2 text-xs rounded-[4px]",
@@ -138,40 +128,6 @@ const badgeVariants = cva("inline-flex items-center font-medium select-none", {
 				"border border-transparent active:border-success-12 active:bg-success-4 hover:bg-success-4",
 		},
 		{
-			variant: "orange",
-			tag: true,
-			className:
-				"border border-transparent active:border-orange-12 active:bg-orange-11 hover:bg-orange-10",
-		},
-		{
-			variant: "orange-outline",
-			tag: true,
-			className: "active:border-orange-12 hover:border-orange-8",
-		},
-		{
-			variant: "orange-subtle",
-			tag: true,
-			className:
-				"border border-transparent active:border-orange-12 active:bg-orange-4 hover:bg-orange-4",
-		},
-		{
-			variant: "brown",
-			tag: true,
-			className:
-				"border border-transparent active:border-brown-12 active:bg-brown-11 hover:bg-brown-10",
-		},
-		{
-			variant: "brown-outline",
-			tag: true,
-			className: "active:border-brown-12 hover:border-brown-8",
-		},
-		{
-			variant: "brown-subtle",
-			tag: true,
-			className:
-				"border border-transparent active:border-brown-12 active:bg-brown-4 hover:bg-brown-4",
-		},
-		{
 			variant: "purple",
 			tag: true,
 			className:
@@ -187,23 +143,6 @@ const badgeVariants = cva("inline-flex items-center font-medium select-none", {
 			tag: true,
 			className:
 				"border border-transparent active:border-purple-12 active:bg-purple-4 hover:bg-purple-4",
-		},
-		{
-			variant: "pink",
-			tag: true,
-			className:
-				"border border-transparent active:border-pink-12 active:bg-pink-11 hover:bg-pink-10",
-		},
-		{
-			variant: "pink-outline",
-			tag: true,
-			className: "active:border-pink-12 hover:border-pink-8",
-		},
-		{
-			variant: "pink-subtle",
-			tag: true,
-			className:
-				"border border-transparent active:border-pink-12 active:bg-pink-4 hover:bg-pink-4",
 		},
 	],
 });

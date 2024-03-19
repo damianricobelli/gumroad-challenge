@@ -9,17 +9,20 @@ import {
 	ContextMenuItem,
 	ContextMenuTrigger,
 } from "@/components/ui/context-menu";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
-	HoverCard,
-	HoverCardContent,
-	HoverCardPortal,
-	HoverCardTrigger,
-} from "@/components/ui/hover-card";
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
 import { useOnClickOutside } from "@/hooks/use-on-click-outside";
 import { cn } from "@/lib/utils";
+import { PopoverPortal } from "@radix-ui/react-popover";
 import { CopyPlus, Trash } from "lucide-react";
 import * as React from "react";
 import { v4 as uuidv4 } from "uuid";
+import { Separator } from "../ui/separator";
 import { ImageEditorResizer } from "./image-editor.resizer";
 
 export function ImageEditorRectangle({
@@ -52,7 +55,6 @@ export function ImageEditorRectangle({
 					rectangle.id === id
 						? {
 								...rectangle,
-								score: undefined,
 								// Ensure the rectangle is always inside the container
 								top: Math.max(
 									0,
@@ -116,7 +118,7 @@ export function ImageEditorRectangle({
 	return (
 		<ContextMenu key={rectangle.id}>
 			<ContextMenuTrigger>
-				<WithHoverCard rectangle={rectangle}>
+				<WithPopover rectangle={rectangle}>
 					<div
 						ref={ref}
 						role="button"
@@ -170,7 +172,7 @@ export function ImageEditorRectangle({
 					>
 						{isSelected && <ImageEditorResizer />}
 					</div>
-				</WithHoverCard>
+				</WithPopover>
 			</ContextMenuTrigger>
 			<ContextMenuContent className="w-64">
 				<ContextMenuItem
@@ -205,62 +207,121 @@ export function ImageEditorRectangle({
 	);
 }
 
-function WithHoverCard({
+function WithPopover({
 	children,
 	rectangle,
 }: {
 	children: React.ReactNode;
 	rectangle: Rectangle;
 }) {
-	const { tool } = useImageEditor();
+	const { tool, setRectangles } = useImageEditor();
 
 	if (tool === "create") {
 		return children;
 	}
 
 	return (
-		<HoverCard>
-			<HoverCardTrigger asChild>{children}</HoverCardTrigger>
-			<HoverCardPortal>
-				<HoverCardContent className="relative py-2.5 px-3.5 z-[60]">
-					{rectangle.score && (
+		<Popover>
+			<PopoverTrigger asChild>{children}</PopoverTrigger>
+			<PopoverPortal>
+				<PopoverContent
+					className="relative z-[60] px-3.5 py-3 space-y-4"
+					side="right"
+					align="start"
+				>
+					<div>
 						<Badge
-							variant={
-								rectangle.score * 100 < 50
-									? "danger-subtle"
-									: rectangle.score * 100 < 75
-									  ? "warning-subtle"
-									  : "success-subtle"
-							}
+							variant="primary-subtle"
 							size="sm"
-							className="rounded-sm absolute -top-2 -right-2"
+							className="rounded-sm mb-2"
 						>
-							Accuracy: {(rectangle.score * 100).toFixed(2)}
+							Coordinates
 						</Badge>
-					)}
-					<Badge variant="info-subtle" size="sm" className="rounded-sm mb-2">
-						Coordinates
-					</Badge>
-					<div className="text-xs text-muted-foreground">
-						<div className="flex justify-between items-center">
-							<p>Left</p>
-							<p>{rectangle.realCoordinates?.left.toFixed(2)}</p>
-						</div>
-						<div className="flex justify-between items-center">
-							<p>Top</p>
-							<p>{rectangle.realCoordinates?.top.toFixed(2)}</p>
-						</div>
-						<div className="flex justify-between items-center">
-							<p>Width</p>
-							<p>{rectangle.realCoordinates?.width.toFixed(2)}</p>
-						</div>
-						<div className="flex justify-between items-center">
-							<p>Height</p>
-							<p>{rectangle.realCoordinates?.height.toFixed(2)}</p>
+						<div className="text-xs text-muted-foreground">
+							<div className="flex justify-between items-center">
+								<p>Left</p>
+								<p>{rectangle.realCoordinates?.left.toFixed(2)}</p>
+							</div>
+							<div className="flex justify-between items-center">
+								<p>Top</p>
+								<p>{rectangle.realCoordinates?.top.toFixed(2)}</p>
+							</div>
+							<div className="flex justify-between items-center">
+								<p>Width</p>
+								<p>{rectangle.realCoordinates?.width.toFixed(2)}</p>
+							</div>
+							<div className="flex justify-between items-center">
+								<p>Height</p>
+								<p>{rectangle.realCoordinates?.height.toFixed(2)}</p>
+							</div>
 						</div>
 					</div>
-				</HoverCardContent>
-			</HoverCardPortal>
-		</HoverCard>
+					<Separator />
+					<div className="grid gap-4">
+						<Badge
+							variant="primary-subtle"
+							size="sm"
+							className="rounded-sm w-max"
+						>
+							Clasification
+						</Badge>
+						<div className="grid gap-1">
+							<div className="grid items-center gap-1 text-muted-foreground text-xs">
+								<Label htmlFor="name" className="text-xs">
+									What is this?
+								</Label>
+								<Input
+									id="name"
+									value={rectangle.name}
+									onChange={(e) => {
+										const value = e.target.value;
+										const modifiedRectangle = {
+											...rectangle,
+											name: value,
+										};
+										setRectangles((prev) =>
+											prev.map((rect) =>
+												rect.id === modifiedRectangle.id
+													? modifiedRectangle
+													: rect,
+											),
+										);
+									}}
+									className="col-span-2 h-8 text-xs"
+									placeholder="Face, glass, clothing, etc."
+								/>
+							</div>
+						</div>
+						<div className="grid gap-1 mb-1">
+							<div className="grid items-center gap-1 text-muted-foreground text-xs">
+								<Label htmlFor="description" className="text-xs">
+									Description
+								</Label>
+								<Input
+									id="description"
+									value={rectangle.description}
+									onChange={(e) => {
+										const value = e.target.value;
+										const modifiedRectangle = {
+											...rectangle,
+											description: value,
+										};
+										setRectangles((prev) =>
+											prev.map((rect) =>
+												rect.id === modifiedRectangle.id
+													? modifiedRectangle
+													: rect,
+											),
+										);
+									}}
+									className="col-span-2 h-8 text-xs"
+									placeholder="Describe the element"
+								/>
+							</div>
+						</div>
+					</div>
+				</PopoverContent>
+			</PopoverPortal>
+		</Popover>
 	);
 }

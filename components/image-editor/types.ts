@@ -5,7 +5,9 @@ export interface Rectangle {
 	left: number;
 	width: number;
 	height: number;
-	score?: number;
+	// name and description
+	name?: string;
+	description?: string;
 	// Initial coordinates provided by AWS Rekognition API with initial scale
 	initialCoordinates?: {
 		top: number;
