@@ -11,7 +11,11 @@ type ImageEditorContextType = {
 	setSelectedRectangle: React.Dispatch<React.SetStateAction<Rectangle | null>>;
 	newRectangle: Rectangle | null;
 	setNewRectangle: React.Dispatch<React.SetStateAction<Rectangle | null>>;
-	tool: string;
+	isResizing: boolean;
+	setIsResizing: React.Dispatch<React.SetStateAction<boolean>>;
+	isMoving: boolean;
+	setIsMoving: React.Dispatch<React.SetStateAction<boolean>>;
+	tool: "move" | "create";
 	setTool: React.Dispatch<React.SetStateAction<"move" | "create">>;
 	showZoomControls: boolean;
 	setShowZoomControls: React.Dispatch<React.SetStateAction<boolean>>;
@@ -35,6 +39,10 @@ const ImageEditorContext = React.createContext<ImageEditorContextType>({
 	setSelectedRectangle: () => {},
 	newRectangle: null,
 	setNewRectangle: () => {},
+	isResizing: false,
+	setIsResizing: () => {},
+	isMoving: false,
+	setIsMoving: () => {},
 	tool: "create",
 	setTool: () => {},
 	showZoomControls: true,

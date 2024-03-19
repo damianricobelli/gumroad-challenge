@@ -48,3 +48,5 @@ export const defaultImages = [
 		index: 11,
 	},
 ];
+
+export type Image = (typeof defaultImages)[number];

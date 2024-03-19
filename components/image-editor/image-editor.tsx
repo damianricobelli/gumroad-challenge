@@ -2,6 +2,7 @@
 
 import useResizeObserver from "@/hooks/use-resize-observer";
 import { cn } from "@/lib/utils";
+import type { Image } from "@/utils/default-images";
 import * as React from "react";
 import { ImageEditorCreator } from "./image-editor.creator";
 import { ImageEditorProvider } from "./image-editor.provider";
@@ -13,10 +14,7 @@ import { ZoomImage } from "./zoom-image";
 export default function ImageEditor({
 	image,
 }: {
-	image: {
-		publicUrl: string;
-		index: number;
-	};
+	image: Image;
 }) {
 	const imgRef = React.useRef<HTMLImageElement>(null);
 	const rect = useResizeObserver<HTMLImageElement>({ ref: imgRef });
@@ -24,6 +22,9 @@ export default function ImageEditor({
 	/******************** CREATE RECTANGLE LOGIC ********************/
 
 	const [[currentScaleX, currentScaleY], setScale] = React.useState([1, 1]);
+
+	const [isResizing, setIsResizing] = React.useState(false);
+	const [isMoving, setIsMoving] = React.useState(false);
 
 	const [zoomScale, setZoomScale] = React.useState(1);
 	const [showZoomControls, setShowZoomControls] = React.useState(false);
@@ -51,6 +52,7 @@ export default function ImageEditor({
 	// Function to handle the mouse move event
 	const handleMouseMoveCreatingNewRectangle = React.useCallback(
 		(e: React.MouseEvent<HTMLDivElement>) => {
+			e.stopPropagation();
 			if (!newRectangle) {
 				return;
 			}
@@ -131,6 +133,10 @@ export default function ImageEditor({
 				setSelectedRectangle,
 				newRectangle,
 				setNewRectangle,
+				isResizing,
+				setIsResizing,
+				isMoving,
+				setIsMoving,
 				tool,
 				setTool,
 				showZoomControls,

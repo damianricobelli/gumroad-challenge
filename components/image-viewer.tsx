@@ -1,10 +1,11 @@
 "use client";
 
-import { Plus, Upload } from "lucide-react";
+import { Plus } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import type { Image as ImageType } from "@/utils/default-images";
 import * as React from "react";
 import ImageEditor from "./image-editor/image-editor";
 import { ImagesList } from "./images-list";
@@ -13,17 +14,11 @@ import { Button } from "./ui/button";
 export function ImageViewer({
 	images,
 }: {
-	images: {
-		publicUrl: string;
-		index: number;
-	}[];
+	images: ImageType[];
 }) {
 	const hasImages = images.length > 0;
 
-	const [selectedImage, setSelectedImage] = React.useState<{
-		publicUrl: string;
-		index: number;
-	} | null>(
+	const [selectedImage, setSelectedImage] = React.useState<ImageType | null>(
 		hasImages
 			? {
 					publicUrl: images[0].publicUrl,
@@ -55,6 +50,7 @@ export function ImageViewer({
 				<Button
 					variant="ghost"
 					className="border-2 border-dashed p-4 rounded-lg flex items-center justify-center h-full"
+					onClick={() => {}}
 				>
 					<div className="flex flex-col items-center gap-2">
 						<Plus className="size-5" />

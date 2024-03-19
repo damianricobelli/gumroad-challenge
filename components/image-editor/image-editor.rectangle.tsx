@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/popover";
 import { useOnClickOutside } from "@/hooks/use-on-click-outside";
 import { cn } from "@/lib/utils";
-import { PopoverPortal } from "@radix-ui/react-popover";
 import { CopyPlus, Trash } from "lucide-react";
 import * as React from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -40,12 +39,19 @@ export function ImageEditorRectangle({
 		containerRef,
 		scaleX,
 		scaleY,
+		setIsMoving,
 	} = useImageEditor();
 
 	const isSelected = selectedRectangle?.id === rectangle.id;
 
 	const ref = React.useRef<HTMLDivElement>(null);
-	useOnClickOutside(ref, () => setSelectedRectangle(null));
+	useOnClickOutside(ref, (e) => {
+		const popover = document.getElementById("popover-content");
+		if (popover?.contains(e.target as Node)) {
+			return;
+		}
+		setSelectedRectangle(null);
+	});
 
 	const handleRectangleMove = React.useCallback(
 		(id: string, dx: number, dy: number) => {
@@ -118,7 +124,7 @@ export function ImageEditorRectangle({
 	return (
 		<ContextMenu key={rectangle.id}>
 			<ContextMenuTrigger>
-				<WithPopover rectangle={rectangle}>
+				<WithPopover rectangle={rectangle} isSelected={isSelected}>
 					<div
 						ref={ref}
 						role="button"
@@ -153,6 +159,8 @@ export function ImageEditorRectangle({
 							let startX = e.clientX;
 							let startY = e.clientY;
 
+							setIsMoving(true);
+
 							const handleMouseMove = (e: MouseEvent) => {
 								const dx = (e.clientX - startX) / zoomScale;
 								const dy = (e.clientY - startY) / zoomScale;
@@ -164,12 +172,21 @@ export function ImageEditorRectangle({
 							const handleMouseUp = () => {
 								document.removeEventListener("mousemove", handleMouseMove);
 								document.removeEventListener("mouseup", handleMouseUp);
+								setIsMoving(false);
 							};
 
 							document.addEventListener("mousemove", handleMouseMove);
 							document.addEventListener("mouseup", handleMouseUp);
 						}}
 					>
+						{isSelected && (
+							<div className="absolute -bottom-6 left-0 right-0 flex justify-center whitespace-nowrap">
+								<div className="bg-info-9 text-background text-xs px-1.5 py-0.5 rounded-sm">
+									{rectangle.realCoordinates?.width.toFixed(0)} x{" "}
+									{rectangle.realCoordinates?.height.toFixed(0)}
+								</div>
+							</div>
+						)}
 						{isSelected && <ImageEditorResizer />}
 					</div>
 				</WithPopover>
@@ -210,118 +227,116 @@ export function ImageEditorRectangle({
 function WithPopover({
 	children,
 	rectangle,
+	isSelected,
 }: {
 	children: React.ReactNode;
 	rectangle: Rectangle;
+	isSelected: boolean;
 }) {
-	const { tool, setRectangles } = useImageEditor();
+	const { tool, setRectangles, isResizing, isMoving } = useImageEditor();
 
-	if (tool === "create") {
+	if (tool === "create" || isResizing || isMoving) {
 		return children;
 	}
 
 	return (
-		<Popover>
+		<Popover open={isSelected}>
 			<PopoverTrigger asChild>{children}</PopoverTrigger>
-			<PopoverPortal>
-				<PopoverContent
-					className="relative z-[60] px-3.5 py-3 space-y-4"
-					side="right"
-					align="start"
-				>
-					<div>
-						<Badge
-							variant="primary-subtle"
-							size="sm"
-							className="rounded-sm mb-2"
-						>
-							Coordinates
-						</Badge>
-						<div className="text-xs text-muted-foreground">
-							<div className="flex justify-between items-center">
-								<p>Left</p>
-								<p>{rectangle.realCoordinates?.left.toFixed(2)}</p>
-							</div>
-							<div className="flex justify-between items-center">
-								<p>Top</p>
-								<p>{rectangle.realCoordinates?.top.toFixed(2)}</p>
-							</div>
-							<div className="flex justify-between items-center">
-								<p>Width</p>
-								<p>{rectangle.realCoordinates?.width.toFixed(2)}</p>
-							</div>
-							<div className="flex justify-between items-center">
-								<p>Height</p>
-								<p>{rectangle.realCoordinates?.height.toFixed(2)}</p>
-							</div>
+			<PopoverContent
+				id="popover-content"
+				onOpenAutoFocus={(e) => e.preventDefault()}
+				className="relative z-[60] px-3.5 py-3 space-y-4 w-64"
+				side="right"
+				align="start"
+			>
+				<div>
+					<Badge variant="primary-subtle" size="sm" className="rounded-sm mb-2">
+						Coordinates
+					</Badge>
+					<div className="text-xs text-muted-foreground">
+						<div className="flex justify-between items-center">
+							<p>Left</p>
+							<p>{rectangle.realCoordinates?.left.toFixed(0)}px</p>
+						</div>
+						<div className="flex justify-between items-center">
+							<p>Top</p>
+							<p>{rectangle.realCoordinates?.top.toFixed(0)}px</p>
+						</div>
+						<div className="flex justify-between items-center">
+							<p>Width</p>
+							<p>{rectangle.realCoordinates?.width.toFixed(0)}px</p>
+						</div>
+						<div className="flex justify-between items-center">
+							<p>Height</p>
+							<p>{rectangle.realCoordinates?.height.toFixed(0)}px</p>
 						</div>
 					</div>
-					<Separator />
-					<div className="grid gap-4">
-						<Badge
-							variant="primary-subtle"
-							size="sm"
-							className="rounded-sm w-max"
-						>
-							Clasification
-						</Badge>
-						<div className="grid gap-1">
-							<div className="grid items-center gap-1 text-muted-foreground text-xs">
-								<Label htmlFor="name" className="text-xs">
-									What is this?
-								</Label>
-								<Input
-									id="name"
-									value={rectangle.name}
-									onChange={(e) => {
-										const value = e.target.value;
-										const modifiedRectangle = {
-											...rectangle,
-											name: value,
-										};
-										setRectangles((prev) =>
-											prev.map((rect) =>
-												rect.id === modifiedRectangle.id
-													? modifiedRectangle
-													: rect,
-											),
-										);
-									}}
-									className="col-span-2 h-8 text-xs"
-									placeholder="Face, glass, clothing, etc."
-								/>
-							</div>
-						</div>
-						<div className="grid gap-1 mb-1">
-							<div className="grid items-center gap-1 text-muted-foreground text-xs">
-								<Label htmlFor="description" className="text-xs">
-									Description
-								</Label>
-								<Input
-									id="description"
-									value={rectangle.description}
-									onChange={(e) => {
-										const value = e.target.value;
-										const modifiedRectangle = {
-											...rectangle,
-											description: value,
-										};
-										setRectangles((prev) =>
-											prev.map((rect) =>
-												rect.id === modifiedRectangle.id
-													? modifiedRectangle
-													: rect,
-											),
-										);
-									}}
-									className="col-span-2 h-8 text-xs"
-									placeholder="Describe the element"
-								/>
-							</div>
+				</div>
+				<Separator />
+				<div className="grid gap-4">
+					<Badge
+						variant="primary-subtle"
+						size="sm"
+						className="rounded-sm w-max"
+					>
+						Clasification
+					</Badge>
+					<div className="grid gap-1">
+						<div className="grid items-center gap-1 text-muted-foreground text-xs">
+							<Label htmlFor="name" className="text-xs">
+								What is this?
+							</Label>
+							<Input
+								id="name"
+								value={rectangle.name}
+								onChange={(e) => {
+									const value = e.target.value;
+									const modifiedRectangle = {
+										...rectangle,
+										name: value,
+									};
+									setRectangles((prev) =>
+										prev.map((rect) =>
+											rect.id === modifiedRectangle.id
+												? modifiedRectangle
+												: rect,
+										),
+									);
+								}}
+								className="col-span-2 h-8 text-xs"
+								placeholder="Face, glass, clothing, etc."
+							/>
 						</div>
 					</div>
-				</PopoverContent>
-			</PopoverPortal>
+					<div className="grid gap-1 mb-1">
+						<div className="grid items-center gap-1 text-muted-foreground text-xs">
+							<Label htmlFor="description" className="text-xs">
+								Description
+							</Label>
+							<Input
+								id="description"
+								value={rectangle.description}
+								onChange={(e) => {
+									const value = e.target.value;
+									const modifiedRectangle = {
+										...rectangle,
+										description: value,
+									};
+									setRectangles((prev) =>
+										prev.map((rect) =>
+											rect.id === modifiedRectangle.id
+												? modifiedRectangle
+												: rect,
+										),
+									);
+								}}
+								className="col-span-2 h-8 text-xs"
+								placeholder="Describe the element"
+							/>
+						</div>
+					</div>
+				</div>
+			</PopoverContent>
 		</Popover>
 	);
 }

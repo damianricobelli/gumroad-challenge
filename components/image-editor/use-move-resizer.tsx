@@ -35,8 +35,6 @@ export function useMoveResizer({
 	const refBottomLeft = React.useRef<HTMLDivElement>(null);
 	const refBottomRight = React.useRef<HTMLDivElement>(null);
 
-	const [isResizing, setIsResizing] = React.useState(false);
-
 	const handleResize = React.useCallback(
 		(id: string, dx: number, dy: number, resizeType: ResizerType) => {
 			setRectangles((prev) =>
@@ -356,7 +354,5 @@ export function useMoveResizer({
 		refTopRight,
 		refBottomLeft,
 		refBottomRight,
-		isResizing,
-		setIsResizing,
 	};
 }

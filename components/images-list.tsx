@@ -16,6 +16,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { toast } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
+import type { Image as ImageType } from "@/utils/default-images";
 import { Edit2, Trash } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -23,20 +24,9 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 interface ImagesListProps {
-	images: {
-		publicUrl: string;
-		index: number;
-	}[];
-	selectedImage: {
-		publicUrl: string;
-		index: number;
-	};
-	setSelectedImage: React.Dispatch<
-		React.SetStateAction<{
-			publicUrl: string;
-			index: number;
-		} | null>
-	>;
+	images: ImageType[];
+	selectedImage: ImageType;
+	setSelectedImage: React.Dispatch<React.SetStateAction<ImageType | null>>;
 	setLoadingSelectedImage: React.Dispatch<React.SetStateAction<boolean>>;
 }
 

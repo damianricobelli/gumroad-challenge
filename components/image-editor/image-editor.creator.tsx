@@ -22,6 +22,8 @@ export function ImageEditorCreator() {
 	// Function to handle the mouse down event
 	const handleCreateNewRectangle = React.useCallback(
 		(e: React.MouseEvent<HTMLDivElement>) => {
+			e.stopPropagation();
+
 			// Only allow left click
 			if (e.button !== 0) {
 				return;
@@ -29,6 +31,15 @@ export function ImageEditorCreator() {
 
 			// If there is a new rectangle being created the user is trying to close the rectangle (mouse up event)
 			if (newRectangle) {
+				if (e.type === "mouseup") {
+					// check if the new rectangle is too small
+					if (newRectangle.width < 20 || newRectangle.height < 20) {
+						// Reset the current rectangle
+						setNewRectangle(null);
+						return;
+					}
+				}
+
 				const adjustedCoordinates = adjustCoordinates(newRectangle, zoomScale);
 
 				const newRectangleData = {
@@ -136,11 +147,19 @@ export function ImageEditorCreator() {
 						...adjustCoordinates(newRectangle, zoomScale),
 						borderWidth: `${(2 / zoomScale).toFixed(4)}px`,
 					}}
-				/>
+				>
+					<div className="absolute -bottom-6 left-0 right-0 flex justify-center whitespace-nowrap">
+						<div className="bg-info-9 text-background text-xs px-1.5 py-0.5 rounded-sm">
+							{newRectangle.realCoordinates?.width.toFixed(0)} x{" "}
+							{newRectangle.realCoordinates?.height.toFixed(0)}
+						</div>
+					</div>
+				</div>
 			)}
 			<div
 				className="absolute size-full top-0 left-0"
 				onMouseDown={handleCreateNewRectangle}
+				onMouseUp={handleCreateNewRectangle}
 			/>
 		</>
 	);

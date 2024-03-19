@@ -21,6 +21,8 @@ export function ImageEditorResizer() {
 		scaleY,
 		containerRef,
 		zoomScale,
+		isResizing,
+		setIsResizing,
 	} = useImageEditor();
 
 	const {
@@ -32,8 +34,6 @@ export function ImageEditorResizer() {
 		refTopRight,
 		refBottomLeft,
 		refBottomRight,
-		isResizing,
-		setIsResizing,
 	} = useMoveResizer({
 		selectedRectangle,
 		setRectangles,
