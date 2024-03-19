@@ -25,8 +25,8 @@ With a backend implementation, the collected data opens up various potential app
 - [x] Random image addition via the API of picsum.photos
 
 ### Inactive Functionalities
-- [] Edit image list button: Removed due to lack of backend; images can be simulated for deletion by removing them from the static list.
-- [] Save changes button: Deactivated as there is no backend storage; modifications are not stored or uploaded.
+- [ ] Edit image list button: Removed due to lack of backend; images can be simulated for deletion by removing them from the static list.
+- [ ] Save changes button: Deactivated as there is no backend storage; modifications are not stored or uploaded.
 
 ## How to run the app
 
